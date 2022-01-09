@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,6 +22,26 @@ class BoxToggle extends StatefulWidget {
 
 class _BoxToggleState extends State<BoxToggle> {
   bool initialPosition = true;
+  final tempRef = FirebaseDatabase.instance.reference();
+
+  void activeListener(){
+    tempRef.child("FirebaseIOT/Soil_Moi_Val").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        if(val==0){
+          initialPosition = false;
+        }
+        else {
+          initialPosition = true;
+        }
+      });
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    activeListener();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(

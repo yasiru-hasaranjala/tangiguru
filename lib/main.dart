@@ -1,9 +1,12 @@
 import 'package:app/components/animation_togle.dart';
 import 'package:app/nav_bar.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -11,14 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Widget> menu = [
-      soilMoisture(context),
-      rain(context),
-      fertilizers(context),
-      phValue(context),
-      sun(context),
-    ];
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xff57A632),
