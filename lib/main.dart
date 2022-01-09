@@ -1,6 +1,7 @@
 import 'package:app/components/animation_togle.dart';
 import 'package:app/nav_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -10,10 +11,12 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  final fb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
+    final ref = fb.reference();
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xff57A632),
@@ -46,7 +49,9 @@ class MyApp extends StatelessWidget {
                 children: [
                   AnimatedToggle(
                     values: const ['Automated ', 'Manual '],
-                    onToggleCallback: (value) {},
+                    onToggleCallback: (value) {
+                      ref.child('/FirebaseIOT').child('Mode').set(value);
+                    },
                     buttonColor: Colors.green,
                     backgroundColor: Colors.green.shade200,
                     textColor: const Color(0xFFFFFFFF),

@@ -122,7 +122,7 @@ class _SoilMoistureState extends State<SoilMoisture> {
                   child: BoxToggle(
                     values: const ['OFF ', 'ON '],
                     onToggleCallback: (value) {
-                      ref.child('/FirebaseIOT').child('Mode').set(value);
+                      ref.child('/FirebaseIOT').child('water_pump').set(value);
 
                     },
                     buttonColor: Colors.green,
