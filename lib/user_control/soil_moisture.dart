@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'components/box_togle.dart';
+import '../components/box_togle.dart';
 
 class SoilMoisture extends StatefulWidget {
   const SoilMoisture({Key? key}) : super(key: key);
@@ -17,19 +17,40 @@ class _SoilMoistureState extends State<SoilMoisture> {
   final myController = TextEditingController();
   String soiVal = "Moisture Value";
   final tempRef = FirebaseDatabase.instance.reference();
+  bool initialPosition = true;
+  bool load = false;
+  DatabaseReference motRef = FirebaseDatabase.instance.ref("FirebaseIOT/water_pump");
 
+  void asyncInit() async {
+    DatabaseEvent event = await motRef.once();
+    setState(() {
+      if(event.snapshot.value == 1){
+        setState(() {
+          initialPosition = false;
+          load = true;
+        });
+      } else{
+        setState(() {
+          initialPosition = true;
+          load = true;
+        });
+      }
+    });
+    activeListener();
+  }
   void activeListener(){
-    tempRef.child("FirebaseIOT/Soil_Moi_Val").onValue.listen((event) {
+    tempRef.child("FirebaseIOT/SM_Value").onValue.listen((event) {
       final Object? val = event.snapshot.value;
       setState(() {
-        soiVal = "Moisture Value= $val";
+        soiVal = "Moisture Value = $val";
       });
     });
   }
+
   @override
   void initState() {
+    asyncInit();
     super.initState();
-    activeListener();
   }
 
 
@@ -97,7 +118,7 @@ class _SoilMoistureState extends State<SoilMoisture> {
                 ),
               ),
             ),
-            Row(
+            !load ? Container(height: 93) : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
@@ -121,6 +142,7 @@ class _SoilMoistureState extends State<SoilMoisture> {
                   padding: const EdgeInsets.all(0),
                   child: BoxToggle(
                     values: const ['OFF ', 'ON '],
+                    initVal: initialPosition,
                     onToggleCallback: (value) {
                       ref.child('/FirebaseIOT').child('water_pump').set(value);
 

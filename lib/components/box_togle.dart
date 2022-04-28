@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class BoxToggle extends StatefulWidget {
   final List<String> values;
+  final bool initVal;
   final ValueChanged onToggleCallback;
   final Color backgroundColor;
   final Color buttonColor;
@@ -11,6 +12,7 @@ class BoxToggle extends StatefulWidget {
 
   BoxToggle({Key? key,
     required this.values,
+    required this.initVal,
     required this.onToggleCallback,
     this.backgroundColor = const Color(0xFFe7e7e8),
     this.buttonColor = const Color(0xFFFFFFFF),
@@ -22,6 +24,15 @@ class BoxToggle extends StatefulWidget {
 
 class _BoxToggleState extends State<BoxToggle> {
   bool initialPosition = true;
+
+  @override
+  void initState() {
+    setState(() {
+      initialPosition = widget.initVal;
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

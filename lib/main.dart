@@ -1,8 +1,11 @@
-import 'package:app/components/animation_togle.dart';
-import 'package:app/nav_bar.dart';
+import 'package:app/main_menu/automatic_control.dart';
+import 'package:app/main_menu/user_control.dart';
+import 'package:app/user_control/nav_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+
+import 'main_menu/main_menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,11 +15,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-  final fb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
-    final ref = fb.reference();
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color(0xff57A632),
@@ -29,216 +30,12 @@ class MyApp extends StatelessWidget {
           bodyText2: TextStyle(fontSize: 12.0, fontFamily: 'Hind'),
         ),
       ),
-      home:WillPopScope(
+      home: WillPopScope(
         onWillPop: () async => false,
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: const Text("Farming App"),
-          ),
-          body: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/bg.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  AnimatedToggle(
-                    values: const ['Automated ', 'Manual '],
-                    onToggleCallback: (value) {
-                      ref.child('/FirebaseIOT').child('Mode').set(value);
-                    },
-                    buttonColor: Colors.green,
-                    backgroundColor: Colors.green.shade200,
-                    textColor: const Color(0xFFFFFFFF),
-                  ),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 5,
-                    primary: false,
-                    padding: const EdgeInsets.all(16),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 1,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10
-                    ),
-                    itemBuilder: (BuildContext context, index) {
-                      return Builder(
-                        builder: (context) {
-                          switch(index){
-                            case 0: return soilMoisture(context);
-                            case 1: return rain(context);
-                            case 2: return fertilizers(context);
-                            case 3: return phValue(context);
-                            case 4: return sun(context);
-                            default: return soilMoisture(context);
-                          }
-                        }
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          )
-        ),
-      ),
+        child: const MainMenu(),
+      )
     );
   }
 
-  Widget soilMoisture(context){
-    return GestureDetector(
-        onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MyStatefulWidget(givenIndex: 0)),
-          );
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: const [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Image(
-                  image: AssetImage('assets/images/soil2.jpg'),
-                  fit: BoxFit.fitWidth,
-                ),
-              ),
-              Text('Soil moisture', style: TextStyle(fontSize: 18)),
-            ],
-          ),
-          decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20))
-          ),
-        ),
-    );
-  }
 
-  Widget rain(context){
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyStatefulWidget(givenIndex: 1)),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Image(
-                image: AssetImage('assets/images/water.jpg'),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Text('Weather', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-      ),
-    );
-  }
-
-  Widget fertilizers(context){
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyStatefulWidget(givenIndex: 2)),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-              child: Image(
-                image: AssetImage('assets/images/fe.png'),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Text('Fertilizers', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-      ),
-    );
-  }
-
-  Widget phValue(context){
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyStatefulWidget(givenIndex: 3)),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 35, vertical: 15),
-              child: Image(
-                image: AssetImage('assets/images/ph2.png'),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Text('PH value', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-      ),
-    );
-  }
-
-  Widget sun(context){
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MyStatefulWidget(givenIndex: 4)),
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: const [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: Image(
-                image: AssetImage('assets/images/sun.png'),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
-            Text('Sunlight', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
-        ),
-      ),
-    );
-  }
 }

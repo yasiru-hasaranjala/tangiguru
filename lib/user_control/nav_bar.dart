@@ -1,19 +1,19 @@
-import 'package:app/fertilizers.dart';
-import 'package:app/ph_value.dart';
-import 'package:app/rain.dart';
-import 'package:app/soil_moisture.dart';
-import 'package:app/sunlight.dart';
+import 'package:app/user_control/fertilizers.dart';
+import 'package:app/user_control/ph_value.dart';
+import 'package:app/user_control/rain.dart';
+import 'package:app/user_control/soil_moisture.dart';
+import 'package:app/user_control/sunlight.dart';
 import 'package:flutter/material.dart';
 
-class MyStatefulWidget extends StatefulWidget {
+class NavBar extends StatefulWidget {
   final int givenIndex;
-  const MyStatefulWidget({Key? key, required this.givenIndex}) : super(key: key);
+  const NavBar({Key? key, required this.givenIndex}) : super(key: key);
 
   @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+  State<NavBar> createState() => _NavBarState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
