@@ -12,7 +12,7 @@ class UserControl extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("Farming App"),
+          title: const Text("User Mode"),
         ),
         body: Container(
           height: MediaQuery.of(context).size.height * 0.9,
@@ -29,7 +29,7 @@ class UserControl extends StatelessWidget {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: 5,
+                  itemCount: 4,
                   primary: false,
                   padding: const EdgeInsets.all(20),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -50,8 +50,6 @@ class UserControl extends StatelessWidget {
                               return fertilizers(context);
                             case 3:
                               return phValue(context);
-                            case 4:
-                              return sun(context);
                             default:
                               return soilMoisture(context);
                           }

@@ -2,7 +2,6 @@ import 'package:app/user_control/fertilizers.dart';
 import 'package:app/user_control/ph_value.dart';
 import 'package:app/user_control/rain.dart';
 import 'package:app/user_control/soil_moisture.dart';
-import 'package:app/user_control/sunlight.dart';
 import 'package:flutter/material.dart';
 
 class NavBar extends StatefulWidget {
@@ -21,8 +20,7 @@ class _NavBarState extends State<NavBar> {
     SoilMoisture(),
     Rain(),
     Fertilizers(),
-    PhValues(),
-    Sunlight()
+    PhValues()
   ];
 
   void _onItemTapped(int index) {
@@ -57,10 +55,6 @@ class _NavBarState extends State<NavBar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.watch_rounded),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wb_sunny),
             label: "",
           ),
         ],

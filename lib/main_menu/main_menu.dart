@@ -1,9 +1,27 @@
 import 'package:app/main_menu/automatic_control.dart';
 import 'package:app/main_menu/user_control.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
+
+  @override
+  State<MainMenu> createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
+  final ref = FirebaseDatabase.instance.reference();
+  bool load = false;
+  DatabaseReference motRef = FirebaseDatabase.instance.ref("FirebaseIOT/water_pump");
+  String mode = "user";
+  int tap = 1;
+
+  @override
+  void initState() {
+    asyncInit();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +39,14 @@ class MainMenu extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
+        child: !load ? Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            userControl(context, size),
+            automaticControl(context, size)
+          ],
+        ) : Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -33,14 +58,39 @@ class MainMenu extends StatelessWidget {
     );
   }
 
+  void asyncInit() async {
+    DatabaseEvent event = await motRef.once();
+    setState(() {
+      if(event.snapshot.value == 1){
+        setState(() {
+          mode = "auto";
+          load = true;
+        });
+      } else{
+        setState(() {
+          mode = "user";
+          load = true;
+        });
+      }
+    });
+  }
+
   Widget userControl(context, size) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => UserControl()),
-        );
+        if(mode == "user") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UserControl()),
+          );
+        }
+        else if(mode == "auto"){
+          ref.child('/FirebaseIOT').child('Mode').set(0);
+          setState(() {
+            mode = "user";
+          });
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(15),
@@ -58,9 +108,14 @@ class MainMenu extends StatelessWidget {
             const Text('User Control', style: TextStyle(fontSize: 21)),
           ],
         ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          boxShadow: mode=="user" ? [
+            const BoxShadow(color: Colors.green, spreadRadius: 8),
+            const BoxShadow(color: Colors.yellow, spreadRadius: 5),
+          ] : [],
+
         ),
       ),
     );
@@ -69,11 +124,19 @@ class MainMenu extends StatelessWidget {
   Widget automaticControl(context, size) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AutomaticControl()),
-        );
+        if(mode == "auto") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AutomaticControl()),
+          );
+        }
+        else if(mode == "user"){
+          ref.child('/FirebaseIOT').child('Mode').set(1);
+          setState(() {
+            mode = "auto";
+          });
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(15),
@@ -91,9 +154,13 @@ class MainMenu extends StatelessWidget {
             const Text('Automatic Control', style: TextStyle(fontSize: 21)),
           ],
         ),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20))
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          boxShadow: mode=="auto" ? [
+          const BoxShadow(color: Colors.green, spreadRadius: 8),
+          const BoxShadow(color: Colors.yellow, spreadRadius: 5),
+        ] : [],
         ),
       ),
     );

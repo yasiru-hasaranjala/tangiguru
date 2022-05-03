@@ -68,42 +68,30 @@ class _SoilMoistureState extends State<SoilMoisture> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 70),
-              child: Text(
+            Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              decoration: ShapeDecoration(
+                color: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0),
+                ),
+              ),
+              padding: const EdgeInsets.fromLTRB(0, 40, 0, 20),
+              child: const Text(
                 "Soil Moisture",
                 style: TextStyle(
-                  fontSize: 25.0,
+                  fontSize: 28.0,
                   fontFamily: 'Hind',
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            // Container(
-            //     child: Column(
-            //       children: <Widget>[
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: <Widget>[
-            //             Text(name),
-            //             SizedBox(width: 20),
-            //             Expanded(child: TextField(controller: myController)),
-            //           ],
-            //         ),
-            //         ElevatedButton(
-            //           onPressed: () {
-            //             ref.child(name).set(myController.text);
-            //           },
-            //           child: Text("Submit"),
-            //         ),
-            //       ],
-            //     ),
-            // ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 45),
             Container(
               width: MediaQuery.of(context).size.width*0.8,
-              color: Colors.greenAccent,
+              color: Colors.orange,
               margin: const EdgeInsets.fromLTRB(2, 22, 2, 20),
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: Center(
@@ -118,17 +106,24 @@ class _SoilMoistureState extends State<SoilMoisture> {
                 ),
               ),
             ),
+            const SizedBox(height: 25),
             !load ? Container(height: 93) : Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
                   width: MediaQuery.of(context).size.width*0.35,
-                  color: Colors.black,
-                  margin: const EdgeInsets.fromLTRB(2, 22, 2, 20),
+                  decoration: ShapeDecoration(
+                    color: Colors.purple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  margin: const EdgeInsets.fromLTRB(10, 22, 2, 20),
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: const Center(
                     child: Text(
-                      "Water Pump-",
+                      "Water Pump",
                       style: TextStyle(
                         fontSize: 22.0,
                         fontFamily: 'Hind',
@@ -145,7 +140,9 @@ class _SoilMoistureState extends State<SoilMoisture> {
                     initVal: initialPosition,
                     onToggleCallback: (value) {
                       ref.child('/FirebaseIOT').child('water_pump').set(value);
-
+                      setState(() {
+                        initialPosition = !initialPosition;
+                      });
                     },
                     buttonColor: Colors.green,
                     backgroundColor: Colors.green.shade200,
@@ -154,19 +151,42 @@ class _SoilMoistureState extends State<SoilMoisture> {
                 ),
               ],
             ),
-            Container(
+            const SizedBox(height: 50),
+            !load ? Container(
               width: MediaQuery.of(context).size.width*0.7,
               height: MediaQuery.of(context).size.width*0.5,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage("assets/images/soil.gif"),
+                  image: AssetImage("assets/images/soil.jpg"),
                   fit: BoxFit.cover,
                 ),
               ),
-            ),
+            ) : gifLoad(initialPosition),
           ],
         ),
       )
+    );
+  }
+
+  Widget gifLoad(initialP){
+    return initialP ? Container(
+      width: MediaQuery.of(context).size.width*0.7,
+      height: MediaQuery.of(context).size.width*0.5,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/soil.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
+    ) : Container(
+      width: MediaQuery.of(context).size.width*0.7,
+      height: MediaQuery.of(context).size.width*0.5,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/soil.gif"),
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
