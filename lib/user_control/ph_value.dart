@@ -10,7 +10,7 @@ class PhValues extends StatefulWidget {
 }
 
 class _PhValuesState extends State<PhValues> {
-  String ph = "--";
+  String ph = "00";
   String phMsg = "Loading";
 
   final tempRef = FirebaseDatabase.instance.reference();
@@ -19,7 +19,7 @@ class _PhValuesState extends State<PhValues> {
     tempRef.child("FirebaseIOT/PH_Value").onValue.listen((event) {
       final Object? val = event.snapshot.value;
       setState(() {
-        ph = "pH = $val";
+        ph = "$val";
       });
     });
   }
@@ -82,7 +82,7 @@ class _PhValuesState extends State<PhValues> {
                 margin: const EdgeInsets.fromLTRB(20, 50, 20, 20),
                 child: Center(
                   child: Text(
-                    ph,
+                    "pH  =  " + ph,
                     style: const TextStyle(
                       fontSize: 40.0,
                       fontFamily: 'Hind',
@@ -105,7 +105,9 @@ class _PhValuesState extends State<PhValues> {
                 alignment: Alignment.center,
                 child: Center(
                   child: Text(
-                    phMsg,
+                    double.parse(ph) < 4.9 || double.parse(ph) > 7.5
+                        ? "Not Suitable for Corn Cultivation"
+                        : "Suitable for Corn cultivation",
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 24.0,

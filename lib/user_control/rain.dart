@@ -29,7 +29,7 @@ class _RainState extends State<Rain> {
     tempRef.child("FirebaseIOT/H_Value").onValue.listen((event) {
       final Object? val = event.snapshot.value;
       setState(() {
-        humidity = "Humidity      =    $val";
+        humidity = "Humidity     =    $val %";
       });
     });
   }

@@ -1,3 +1,4 @@
+import 'package:app/components/box_togle.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,15 @@ class _FertilizersState extends State<Fertilizers> {
   String n = "--";
   String p = '--';
   String k = '--';
-
+  bool nIP = true;
+  bool pIP = true;
+  bool kIP = true;
+  bool loadN = false;
+  bool loadP = false;
+  bool loadK = false;
+  DatabaseReference nRef = FirebaseDatabase.instance.ref("FirebaseIOT/N_pump");
+  DatabaseReference pRef = FirebaseDatabase.instance.ref("FirebaseIOT/P_pump");
+  DatabaseReference kRef = FirebaseDatabase.instance.ref("FirebaseIOT/K_pump");
   final tempRef = FirebaseDatabase.instance.reference();
 
   void nListener(){
@@ -43,8 +52,62 @@ class _FertilizersState extends State<Fertilizers> {
     });
   }
 
+  void nInit() async {
+    DatabaseEvent event = await nRef.once();
+    setState(() {
+      if(event.snapshot.value == 1){
+        setState(() {
+          nIP = false;
+          loadN = true;
+        });
+      } else{
+        setState(() {
+          nIP = true;
+          loadN = true;
+        });
+      }
+    });
+  }
+
+  void pInit() async {
+    DatabaseEvent event = await pRef.once();
+    setState(() {
+      if(event.snapshot.value == 1){
+        setState(() {
+          pIP = false;
+          loadP = true;
+        });
+      } else{
+        setState(() {
+          pIP = true;
+          loadP = true;
+        });
+      }
+    });
+  }
+
+  void kInit() async {
+    DatabaseEvent event = await kRef.once();
+    setState(() {
+      if(event.snapshot.value == 1){
+        setState(() {
+          kIP = false;
+          loadK = true;
+        });
+      } else{
+        setState(() {
+          kIP = true;
+          loadK = true;
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
+    nInit();
+    pInit();
+    kInit();
     nListener();
     pListener();
     kListener();
@@ -120,6 +183,59 @@ class _FertilizersState extends State<Fertilizers> {
                   ),
                 ],
               ),
+              !loadN ? Container(height: 93) : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.25,
+                    decoration: ShapeDecoration(
+                      color: Colors.black54,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    margin: const EdgeInsets.fromLTRB(10, 22, 2, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: const Center(
+                      child: Text(
+                        "N Pump",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontFamily: 'Hind',
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "-",
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontFamily: 'Hind',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: BoxToggle(
+                      values: const ['OFF ', 'ON '],
+                      initVal: nIP,
+                      onToggleCallback: (value) {
+                        tempRef.child('/FirebaseIOT').child('N_pump').set(value);
+                        setState(() {
+                          nIP = !nIP;
+                        });
+                      },
+                      buttonColor: Colors.pink,
+                      backgroundColor: Colors.pink.shade100,
+                      textColor: const Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -157,6 +273,59 @@ class _FertilizersState extends State<Fertilizers> {
                   ),
                 ],
               ),
+              !loadP ? Container(height: 93) : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.25,
+                    decoration: ShapeDecoration(
+                      color: Colors.black54,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    margin: const EdgeInsets.fromLTRB(10, 22, 2, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: const Center(
+                      child: Text(
+                        "P Pump",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontFamily: 'Hind',
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "-",
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontFamily: 'Hind',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: BoxToggle(
+                      values: const ['OFF ', 'ON '],
+                      initVal: pIP,
+                      onToggleCallback: (value) {
+                        tempRef.child('/FirebaseIOT').child('P_pump').set(value);
+                        setState(() {
+                          pIP = !pIP;
+                        });
+                      },
+                      buttonColor: Colors.deepPurple,
+                      backgroundColor: Colors.deepPurple.shade100,
+                      textColor: const Color(0xFFFFFFFF),
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -190,6 +359,59 @@ class _FertilizersState extends State<Fertilizers> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                  ),
+                ],
+              ),
+              !loadK ? Container(height: 93) : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width*0.25,
+                    decoration: ShapeDecoration(
+                      color: Colors.black54,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    margin: const EdgeInsets.fromLTRB(10, 22, 2, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: const Center(
+                      child: Text(
+                        "K Pump",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontFamily: 'Hind',
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "-",
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      fontFamily: 'Hind',
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: BoxToggle(
+                      values: const ['OFF ', 'ON '],
+                      initVal: kIP,
+                      onToggleCallback: (value) {
+                        tempRef.child('/FirebaseIOT').child('K_pump').set(value);
+                        setState(() {
+                          kIP = !kIP;
+                        });
+                      },
+                      buttonColor: Colors.deepOrange,
+                      backgroundColor: Colors.deepOrange.shade100,
+                      textColor: const Color(0xFFFFFFFF),
                     ),
                   ),
                 ],

@@ -114,7 +114,7 @@ class _SoilMoistureState extends State<SoilMoisture> {
                 Container(
                   width: MediaQuery.of(context).size.width*0.35,
                   decoration: ShapeDecoration(
-                    color: Colors.purple,
+                    color: Colors.purple.shade900,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
                     ),
@@ -131,6 +131,15 @@ class _SoilMoistureState extends State<SoilMoisture> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
+                ),
+                const Text(
+                  "-",
+                  style: TextStyle(
+                    fontSize: 50.0,
+                    fontFamily: 'Hind',
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Padding(

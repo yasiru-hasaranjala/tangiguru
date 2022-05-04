@@ -13,9 +13,12 @@ class AutomaticControl extends StatefulWidget {
 }
 
 class _AutomaticControlState extends State<AutomaticControl> {
-  String ph = "--";
+  String ph = "00";
   String phMsg = "Loading";
-  String pump = "";
+  String wpump = "0";
+  String npump = "0";
+  String ppump = "0";
+  String kpump = "0";
   String n = "--";
   String p = '--';
   String k = '--';
@@ -25,11 +28,35 @@ class _AutomaticControlState extends State<AutomaticControl> {
 
   final tempRef = FirebaseDatabase.instance.reference();
 
-  void pumpListener(){
-    tempRef.child("FirebaseIOT/water_pump").onValue.listen((event) {
+  void wpListener(){
+    tempRef.child("FirebaseIOT/Auto/W").onValue.listen((event) {
       final Object? val = event.snapshot.value;
       setState(() {
-        pump = "$val";
+        wpump = "$val";
+      });
+    });
+  }
+  void npListener(){
+    tempRef.child("FirebaseIOT/Auto/N").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        npump = "$val";
+      });
+    });
+  }
+  void ppListener(){
+    tempRef.child("FirebaseIOT/Auto/P").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        ppump = "$val";
+      });
+    });
+  }
+  void kpListener(){
+    tempRef.child("FirebaseIOT/Auto/K").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        kpump = "$val";
       });
     });
   }
@@ -91,7 +118,7 @@ class _AutomaticControlState extends State<AutomaticControl> {
     tempRef.child("FirebaseIOT/PH_Value").onValue.listen((event) {
       final Object? val = event.snapshot.value;
       setState(() {
-        ph = "pH value = $val";
+        ph = "$val";
       });
     });
   }
@@ -111,7 +138,10 @@ class _AutomaticControlState extends State<AutomaticControl> {
     pListener();
     kListener();
     phListener();
-    phMsgListener();
+    wpListener();
+    npListener();
+    ppListener();
+    kpListener();
     tempListener();
     humListener();
     weatherListener();
@@ -156,7 +186,7 @@ class _AutomaticControlState extends State<AutomaticControl> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            ph,
+                            "pH  =  " + ph,
                             style: const TextStyle(
                               fontSize: 23.0,
                               fontFamily: 'Hind',
@@ -166,7 +196,9 @@ class _AutomaticControlState extends State<AutomaticControl> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            phMsg,
+                              double.parse(ph) < 4.9 || double.parse(ph) > 7.5
+                                ? "Not Suitable for Corn Cultivation"
+                                : "Suitable for Corn cultivation",
                             style: const TextStyle(
                               fontSize: 17.0,
                               fontFamily: 'Hind',
@@ -196,21 +228,82 @@ class _AutomaticControlState extends State<AutomaticControl> {
                     ),
                   ),
                   margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
+                  padding: const EdgeInsets.fromLTRB(8, 20, 8, 14),
                   alignment: Alignment.center,
-                  child: Center(
-                    child: Text(
-                      pump == "0"
-                          ? "Soil Moisture is Wet\n Motor is OFF"
-                          : "Soil Mosisture is Dry\n Motor is ON",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24.0,
-                        fontFamily: 'Hind',
-                        color: Colors.purple,
-                        fontWeight: FontWeight.bold,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          wpump == "0"
+                              ? "\"Soil Moisture is Wet\""
+                              : "\"Soil Moisture is Dry\"",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 21.0,
+                            fontFamily: 'Hind',
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    ),
+                      Center(
+                        child: Text(
+                          wpump == "0"
+                              ? "Water Pump is OFF"
+                              : "Water Pump is ON",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 25.0,
+                            fontFamily: 'Hind',
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          npump == "0"
+                              ? "N Pump is OFF"
+                              : "N Pump is ON",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontFamily: 'Hind',
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          ppump == "0"
+                              ? "P Pump is OFF"
+                              : "P Pump is ON",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontFamily: 'Hind',
+                            color: Colors.indigo,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          kpump == "0"
+                              ? "K Pump is OFF"
+                              : "K Pump is ON",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 16.0,
+                            fontFamily: 'Hind',
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -373,7 +466,7 @@ class _AutomaticControlState extends State<AutomaticControl> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            humidity,
+                            humidity + " %",
                             style: const TextStyle(
                               fontSize: 21.0,
                               fontFamily: 'Hind',

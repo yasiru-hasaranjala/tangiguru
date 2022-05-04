@@ -36,9 +36,9 @@ class _BoxToggleState extends State<BoxToggle> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Get.width * 0.42,
-      height: Get.width * 0.13,
-      margin: EdgeInsets.all(20),
+      width: Get.width * 0.38,
+      height: Get.width * 0.12,
+      margin: EdgeInsets.all(8),
       child: Stack(
         children: <Widget>[
           GestureDetector(
