@@ -72,7 +72,8 @@ class _PhValuesState extends State<PhValues> {
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width*0.52,
+                width: MediaQuery.of(context).size.width*0.72,
+                padding: const EdgeInsets.all(5),
                 decoration: ShapeDecoration(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -84,7 +85,7 @@ class _PhValuesState extends State<PhValues> {
                   child: Text(
                     "pH  =  " + ph,
                     style: const TextStyle(
-                      fontSize: 40.0,
+                      fontSize: 37.0,
                       fontFamily: 'Hind',
                       color: Colors.pink,
                       fontWeight: FontWeight.bold,

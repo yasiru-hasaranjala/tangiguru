@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class UserControl extends StatelessWidget {
   UserControl({Key? key}) : super(key: key);
-  final fb = FirebaseDatabase.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +56,7 @@ class UserControl extends StatelessWidget {
                     );
                   },
                 ),
+                robot(context),
               ],
             ),
           ),
@@ -188,7 +188,8 @@ class UserControl extends StatelessWidget {
     );
   }
 
-  Widget sun(context) {
+
+  Widget robot(context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -198,17 +199,24 @@ class UserControl extends StatelessWidget {
         );
       },
       child: Container(
+        //height: MediaQuery.of(context).size.height*0.22,
+        width: MediaQuery.of(context).size.width*0.88,
         padding: const EdgeInsets.all(8),
         child: Column(
-          children: const [
+          children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: Image(
-                image: AssetImage('assets/images/sun.png'),
-                fit: BoxFit.fitWidth,
+              padding: const EdgeInsets.all(8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image(
+                  image: const AssetImage('assets/images/rover.jpg'),
+                  fit: BoxFit.fitWidth,
+                  width: MediaQuery.of(context).size.width*0.8,
+                  height: MediaQuery.of(context).size.height*0.2,
+                ),
               ),
             ),
-            Text('Sunlight', style: TextStyle(fontSize: 18)),
+            const Text('Sunlight', style: TextStyle(fontSize: 18)),
           ],
         ),
         decoration: const BoxDecoration(
