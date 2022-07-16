@@ -103,7 +103,7 @@ class _RobotState extends State<Robot> {
                   child: Text(
                     'Liquid Fertilizer Availability',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       fontFamily: 'Hind',
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -168,7 +168,7 @@ class _RobotState extends State<Robot> {
                   child: Text(
                     'Corn Seed Planting Quantity',
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                       fontFamily: 'Hind',
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

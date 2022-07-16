@@ -216,7 +216,7 @@ class UserControl extends StatelessWidget {
                 ),
               ),
             ),
-            const Text('Sunlight', style: TextStyle(fontSize: 18)),
+            const Text('Robot', style: TextStyle(fontSize: 18)),
           ],
         ),
         decoration: const BoxDecoration(
