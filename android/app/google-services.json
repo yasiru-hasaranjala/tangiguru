@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "210879993362",
-    "firebase_url": "https://project10-f6319-default-rtdb.firebaseio.com",
-    "project_id": "project10-f6319",
-    "storage_bucket": "project10-f6319.appspot.com"
+    "project_number": "687040831958",
+    "firebase_url": "https://fire-tangi-guru-default-rtdb.firebaseio.com",
+    "project_id": "fire-tangi-guru",
+    "storage_bucket": "fire-tangi-guru.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:210879993362:android:79a47badeed3b098c92acb",
+        "mobilesdk_app_id": "1:687040831958:android:97c5e67ca6da35bd628477",
         "android_client_info": {
-          "package_name": "com.example.app"
+          "package_name": "com.example.tangiguru"
         }
       },
       "oauth_client": [
         {
-          "client_id": "210879993362-h3j884qck9vrl1iakvj5p1ga99806m5g.apps.googleusercontent.com",
+          "client_id": "687040831958-kb8nd0pkk6hojgu3s6maab642gub3h8r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDTDSLu-1fHUTRORTWX9xZOrKOQzPvJTLU"
+          "current_key": "AIzaSyBehFZjblL8h_3L5rvpvhnBY-MMLiVpIGQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "210879993362-h3j884qck9vrl1iakvj5p1ga99806m5g.apps.googleusercontent.com",
+              "client_id": "687040831958-kb8nd0pkk6hojgu3s6maab642gub3h8r.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

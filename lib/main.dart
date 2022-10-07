@@ -1,14 +1,11 @@
-import 'package:app/main_menu/automatic_control.dart';
-import 'package:app/main_menu/user_control.dart';
-import 'package:app/user_control/nav_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'main_menu/main_menu.dart';
 import 'dart:async';
+import 'login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,8 +65,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primaryColor: const Color(0xff57A632),
-        primarySwatch: Colors.green,
+        primaryColor: const Color(0xff2726A6),
+        primarySwatch: Colors.blue,
         fontFamily: 'Georgia',
         // Define the default `TextTheme`. Use this to specify the default
         // text styling for headlines, titles, bodies of text, and more.
@@ -80,7 +77,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: WillPopScope(
         onWillPop: () async => false,
-        child: const MainMenu(),
+        // child: const MainMenu(),
+        child: LoginDemo(),
       )
     );
   }

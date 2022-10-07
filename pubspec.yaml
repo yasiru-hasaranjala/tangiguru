@@ -40,6 +40,8 @@ dependencies:
   firebase_messaging: ^11.2.7
   flutter_local_notifications: ^9.5.3+1
   liquid_progress_indicator: ^0.4.0
+  expandable: ^5.0.1
+  firebase_auth: ^3.3.8
 
 
 dev_dependencies:
@@ -66,7 +68,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/
+   - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
