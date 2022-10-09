@@ -138,7 +138,42 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
+      bottomSheet: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.purple,
+          ),
+          child: Text('Clean All Mark of '+ childName),
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: Text('Delete all marks of ' + childName + "?"),
+              titleTextStyle: const TextStyle(
+                color: Colors.redAccent,
+                fontSize: 20,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final User? user = auth.currentUser;
+                    final uid = user?.uid;
+                    setState(() {
+                      dbRef.child("users/"+ uid.toString() + "/subjects").set({});
+                    });
+                    Navigator.pop(context, 'OK');
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
