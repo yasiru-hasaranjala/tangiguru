@@ -1,4 +1,7 @@
 import 'package:app/login.dart';
+import 'package:app/subjectCard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:expandable/expandable.dart';
@@ -11,6 +14,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  String childName = "Child";
+  String age = "4-5";
+  final dbRef = FirebaseDatabase.instance.reference();
+
+  void nListener(String uid){
+    dbRef.child("users/"+ uid + "/childName").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        childName = "$val";
+      });
+    });
+  }
+  void aListener(String uid){
+    dbRef.child("users/"+ uid + "/age").onValue.listen((event) {
+      final Object? val = event.snapshot.value;
+      setState(() {
+        age = "$val";
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+    nListener(uid.toString());
+    aListener(uid.toString());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +100,9 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(
-                          'Shane\'s Marks' ,
-                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        child: Text(
+                          childName + '\'s Marks' ,
+                          style: const TextStyle(color: Colors.white, fontSize: 17),
                         ),
                       ),
                     ),
@@ -96,515 +130,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            ExpandablePanel(
-              header: Container(
-                width: MediaQuery.of(context).size.width*0.93,
-                decoration: ShapeDecoration(
-                  color: Colors.lightBlue.shade200,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Get.width * 0.02),
-                  ),
-                ),
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Color Identification -",
-                      style: TextStyle(
-                        fontSize: 19.0,
-                        fontFamily: 'Hind',
-                        color: Colors.pink,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.star  ,
-                            color: Colors.amber,
-                            size: 25.0,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.star  ,
-                            color: Colors.amber,
-                            size: 25.0,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.star  ,
-                            color: Colors.amber,
-                            size: 25.0,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.star_half  ,
-                            color: Colors.amber,
-                            size: 25.0,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.star_border  ,
-                            color: Colors.amber,
-                            size: 25.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              collapsed: Container(),
-              expanded: Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: const [
-                        Text(
-                          "Quiz 1 -",
-                          style: TextStyle(
-                            fontSize: 19.0,
-                            fontFamily: 'Hind',
-                            color: Colors.redAccent ,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.check_box ,
-                            color: Colors.green,
-                            size: 30.0,
-                          ),
-                        ),
-
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        Text(
-                          "Quiz 2 -",
-                          style: TextStyle(
-                            fontSize: 19.0,
-                            fontFamily: 'Hind',
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(0.1),
-                          child: Icon(
-                            Icons.close ,
-                            color: Colors.red,
-                            size: 30.0,
-                          ),
-                        ),
-
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // tapHeaderToExpand: true,
-              // hasIcon: true,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*0.98,
-              decoration: ShapeDecoration(
-                color: Colors.lightBlue.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.02),
-                ),
-              ),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Shapes & Sizes -",
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontFamily: 'Hind',
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_half  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_border  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*0.98,
-              decoration: ShapeDecoration(
-                color: Colors.lightBlue.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.02),
-                ),
-              ),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Letters -",
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontFamily: 'Hind',
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_half  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_border  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*0.98,
-              decoration: ShapeDecoration(
-                color: Colors.lightBlue.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.02),
-                ),
-              ),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Numbers -",
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontFamily: 'Hind',
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_half  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_border  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*0.98,
-              decoration: ShapeDecoration(
-                color: Colors.lightBlue.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.02),
-                ),
-              ),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Making Words -",
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontFamily: 'Hind',
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_half  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_border  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width*0.98,
-              decoration: ShapeDecoration(
-                color: Colors.lightBlue.shade200,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Get.width * 0.02),
-                ),
-              ),
-              margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              padding: const EdgeInsets.fromLTRB(15, 10, 5, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        "Mathematics -",
-                        style: TextStyle(
-                          fontSize: 19.0,
-                          fontFamily: 'Hind',
-                          color: Colors.pink,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_half  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(0.1),
-                        child: Icon(
-                          Icons.star_border  ,
-                          color: Colors.amber,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                ],
-              ),
-            ),
+            const SubjectCard("Color Identification", "color-identification"),
+            const SubjectCard("Shapes and Sizes", "shapes-and-sizes"),
+            const SubjectCard("Letters", "letters"),
+            const SubjectCard("Numbers", "numbers"),
+            const SubjectCard("Making Words", "making-words"),
           ],
         ),
       ),

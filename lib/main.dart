@@ -35,9 +35,9 @@ class _MyAppState extends State<MyApp> {
     var platform = InitializationSettings(android: android, iOS: ios);
     flutterLocalNotificationsPlugin.initialize(platform);
 
-    firebaseMessaging.getToken().then((token) {
-      update(token!);
-    });
+    // firebaseMessaging.getToken().then((token) {
+    //   update(token!);
+    // });
   }
 
   showNotification(Map<String, dynamic> msg) async {

@@ -33,4 +33,9 @@ class AuthenticationHelper {
 
     print('signout');
   }
+
+  Future getUID() async {
+    final uid = user.uid;
+    return uid;
+  }
 }
